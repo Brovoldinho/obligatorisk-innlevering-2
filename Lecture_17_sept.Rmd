@@ -1,0 +1,48 @@
+---
+title: "Lecture 17. sept"
+author: "Even Grindstad Brovold"
+date: "16 september 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(reshape2)
+```
+
+##Last opp data
+
+```{r,warning=FALSE}
+
+
+equinor_data <- read_csv("https://www.netfonds.no/quotes/paperhistory.php?paper=EQNR.OSE&csv_format=csv", 
+    col_types = cols(quote_date = col_date(format = "%Y%m%d")))
+
+norskhydro_data <- read_csv("https://www.netfonds.no/quotes/paperhistory.php?paper=NHY.OSE&csv_format=csv", 
+    col_types = cols(quote_date = col_date(format = "%Y%m%d")))
+```
+
+##Merger data
+
+```{r,}
+
+merged_data <- merge(x=equinor_data, y=norskhydro_data, by = "quote_date",
+      all.x = T)
+
+```
+
+##Plotter data
+
+```{r}
+
+ggplot2::ggplot(data=merged_data, aes(x=quote_date))+
+  geom_line(aes(y = close.x , color = "#00AFBB"))+
+              geom_line(aes(y= close.y,color = "#FC4E07"))+
+  xlab("date")+
+  ylab("value")
+
+
+
+```
+
